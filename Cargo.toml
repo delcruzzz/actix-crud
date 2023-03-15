@@ -6,3 +6,17 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# framework web para rust
+actix-web = "4"
+# biblioteca de fecha y hora con diesel 
+chrono = {version = "0.4.19", features = ["serde"]}
+# ORM y Query Builder para rust
+diesel = {version = "1.4.4", features = ["postgres", "r2d2", "chrono"]}
+# le permite cargar variables de entorno desde el archivo .env
+dotenv = "0.15.0"
+# implementaun registrador que se configurará a través de env
+env_logger = "0.9.0"
+# un serialized y deserialized de estructuras de datos en rust
+serde = {version = "1.0.136", features = ["derive"]}
+# un formato de archivo de serialización JSON - para leer un JSON sin procesar
+serde_json = "1.0"
