@@ -9,7 +9,7 @@ extern crate diesel;
     conexiones
 */
 
-use actix_web::{get, web, App, HttpServer, Responder};
+use actix_web::{get, web, App, HttpServer, Responder, /* middleware */};
 use diesel::prelude::*;
 use diesel::r2d2::{self, ConnectionManager};
 
@@ -28,6 +28,12 @@ async fn main() -> std::io::Result<()> {
     // cargar la variable de entorno
     dotenv::dotenv().ok();
 
+    /*
+        se necesita agregar algún registro de información cuando el cliente hace 
+        algunas solicitudes
+    */
+    // env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+
     // configurcación del pool para la conexión de la base de datos
     let database_url = std::env::var("DATABASE_URL").expect("error reading env var");
     let manager = ConnectionManager::<PgConnection>::new(database_url);
@@ -38,6 +44,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(pool.clone()))
+            // .wrap(middleware::Logger::default())
             .service(welcome)
             .service(handlers::tweets::get_tweets)
             .service(handlers::tweets::get_tweet_by_id)
